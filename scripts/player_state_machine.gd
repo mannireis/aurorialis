@@ -15,9 +15,9 @@ func _ready() -> void:
 			push_warning("State machine contains incompatable child node")
 	
 	await owner.ready
-	CURRENT_STATE.enter()
+	CURRENT_STATE.enter(null)
 
-func _process(delta: float) -> void:
+func _process(delta) -> void:
 	CURRENT_STATE.update(delta)
 	Global.debug.add_property("Current State",CURRENT_STATE.name,1)
 
@@ -29,7 +29,7 @@ func on_child_transition(new_state_name: StringName) -> void:
 	if new_state != null:
 		if new_state != CURRENT_STATE:
 			CURRENT_STATE.exit()
-			new_state.enter()
+			new_state.enter(CURRENT_STATE)
 			CURRENT_STATE = new_state
 		else:
 			push_warning("State does not exist")

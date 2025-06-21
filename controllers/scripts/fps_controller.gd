@@ -20,9 +20,9 @@ var _rotation_input : float
 var _tilt_input : float
 var _player_rotation : Vector3
 var _camera_rotation : Vector3
-
 var _is_crouching : bool = false
 
+var _current_rotation : float
 
 func _input(event):
 	if event.is_action_pressed("exit"):
@@ -34,7 +34,8 @@ func _unhandled_input(event):
 		_rotation_input = -event.relative.x * MOUSE_SENS
 		_tilt_input = -event.relative.y * MOUSE_SENS
 
-func _update_camera(delta):
+func update_camera(delta):
+	_current_rotation = _rotation_input
 	_mouse_rotation.x += _tilt_input * delta
 	_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
 	_mouse_rotation.y += _rotation_input * delta
@@ -62,7 +63,7 @@ func _physics_process(delta: float) -> void:
 	Global.debug.add_property("MovementSpeed",_speed, 2)
 	Global.debug.add_property("MouseRotation",_mouse_rotation, 3)
 
-	_update_camera(delta)
+	update_camera(delta)
 
 func set_movement_speed(state : String):
 	match state:
