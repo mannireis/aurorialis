@@ -4,9 +4,9 @@ class_name SlidingPlayerState  extends PlayerMovementState
 @export var ACCELERATION : float = 0.1
 @export var DECELARATION : float = 0.25
 @export var TILT_AMOUNT : float = 0.09
-@export_range(1, 6, 0.1) var SLIDE_ANIM_SPEED : float = 4.0
+@export_range(1, 6, 0.1) var SLIDE_ANIM_SPEED : float = 7
 
-@onready var CROUCH_SHAPECAST : ShapeCast3D = %ShapeCast3D
+@onready var CROUCH_SHAPECAST : ShapeCast3D = %ShapeCastTop
 
 func enter(previous_state) -> void:
 	set_tilt(PLAYER._current_rotation)

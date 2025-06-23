@@ -5,7 +5,7 @@ class_name CrouchingPlayerState extends PlayerMovementState
 @export var DECELARATION : float = 0.25
 @export_range(1, 6, 0.1) var CROUCH_SPEED : float = 4.0
 
-@onready var CROUCH_SHAPECAST : ShapeCast3D = %ShapeCast3D
+@onready var CROUCH_SHAPECAST : ShapeCast3D = %ShapeCastTop
 
 var RELEASED : bool = false
 
@@ -29,6 +29,12 @@ func update(delta):
 	elif Input.is_action_pressed("crouch") == false and RELEASED == false:
 		RELEASED = true
 		uncrouch()
+	
+	if Input.is_action_just_pressed("jump") and PLAYER.is_on_floor():
+		transition.emit("JumpingPlayerState")
+
+	if PLAYER.velocity.y < -3.0 and !PLAYER.is_on_floor():
+		transition.emit("FallingPlayerState")
 
 func uncrouch():
 	if CROUCH_SHAPECAST.is_colliding() == false:

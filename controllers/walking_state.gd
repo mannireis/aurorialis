@@ -11,7 +11,12 @@ func exit():
 	ANIMATION.speed_scale = 1.0
 
 func enter(previous_state) -> void:
-	ANIMATION.play("walking",-1.0,1.0)
+	if ANIMATION.is_playing() and ANIMATION.current_animation == "jump_end":
+		await ANIMATION.animation_finished
+		ANIMATION.play("walking",-1.0,1.0)
+	else:
+		ANIMATION.play("walking",-1.0,1.0)
+
 	PLAYER._speed = PLAYER.SPEED_DEFAULT
 
 func update(delta):
@@ -28,6 +33,12 @@ func update(delta):
 
 	if Input.is_action_just_pressed("crouch") and PLAYER.is_on_floor():
 		transition.emit("CrouchingPlayerState")
+		
+	if Input.is_action_just_pressed("jump") and PLAYER.is_on_floor():
+		transition.emit("JumpingPlayerState")
+		
+	if PLAYER.velocity.y < -3.0 and !PLAYER.is_on_floor():
+		transition.emit("FallingPlayerState")
 
 func set_anim_speed(spd):
 	var alpha = remap(spd, 0.0, SPEED, 0.0, 1.0)

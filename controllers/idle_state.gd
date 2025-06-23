@@ -7,7 +7,11 @@ extends PlayerMovementState
 @export var DECELARATION : float = 0.25
 
 func enter(previous_state) -> void:
-	ANIMATION.pause()
+	if ANIMATION.is_playing() and ANIMATION.current_animation == "jump_end":
+		await ANIMATION.animation_finished
+		ANIMATION.pause()
+	else:
+		ANIMATION.pause()
 
 func update(delta):
 	PLAYER.update_gravity(delta)
@@ -19,3 +23,9 @@ func update(delta):
 	
 	if Input.is_action_just_pressed("crouch") and PLAYER.is_on_floor():
 		transition.emit("CrouchingPlayerState")
+	
+	if Input.is_action_just_pressed("jump") and PLAYER.is_on_floor():
+		transition.emit("JumpingPlayerState")
+		
+	if PLAYER.velocity.y < -3.0 and !PLAYER.is_on_floor():
+		transition.emit("FallingPlayerState")
