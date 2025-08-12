@@ -5,6 +5,7 @@ Made with godot engine.
 ## How to install:
 
 Download the latest release from the [releases page](https://github.com/mannireis/aurorialis/releases).
+Uncompress the zip and run the executable
 
 ## How to play:
 
