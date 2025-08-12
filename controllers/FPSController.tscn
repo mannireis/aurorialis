@@ -451,6 +451,33 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_u8dbi"]
 resource_name = "wall_slide"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraController:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.174533)]
+}
+
+[sub_resource type="Animation" id="Animation_qxme2"]
+resource_name = "wall_slide_end"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraController:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.174533), Vector3(0, 0, 0)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lwx6h"]
 _data = {
@@ -461,14 +488,15 @@ _data = {
 &"sliding": SubResource("Animation_i2oq4"),
 &"sprinting": SubResource("Animation_ioeo4"),
 &"walking": SubResource("Animation_ypegj"),
-&"wall_slide": SubResource("Animation_u8dbi")
+&"wall_slide": SubResource("Animation_u8dbi"),
+&"wall_slide_end": SubResource("Animation_qxme2")
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_v8m2t"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u8dbi"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qxme2"]
+radius = 0.82
+height = 1.64
 
 [node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIMATIONPLAYER", "CROUCH_SHAPECAST")]
 script = ExtResource("1_v8m2t")
@@ -505,17 +533,10 @@ shape = SubResource("SphereShape3D_v8m2t")
 target_position = Vector3(0, -0.4, 0)
 debug_shape_custom_color = Color(0, 1, 0.470588, 1)
 
-[node name="ShapeCastLeft" type="ShapeCast3D" parent="."]
+[node name="ShapeCastWall" type="ShapeCast3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 shape = SubResource("CapsuleShape3D_u8dbi")
-target_position = Vector3(0, -0.4, 0)
-debug_shape_custom_color = Color(0, 1, 0.470588, 1)
-
-[node name="ShapeCastRight" type="ShapeCast3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.4, 0)
-shape = SubResource("CapsuleShape3D_qxme2")
 target_position = Vector3(0, -0.4, 0)
 debug_shape_custom_color = Color(0, 1, 0.470588, 1)
 
@@ -598,6 +619,7 @@ metadata/_custom_type_script = "uid://c1ok8qpxxrvb8"
 
 [node name="SlidingPlayerState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("10_i2oq4")
+SPEED = 6.0
 metadata/_custom_type_script = "uid://bxynjae0xjxpn"
 
 [node name="JumpingPlayerState" type="Node" parent="PlayerStateMachine"]

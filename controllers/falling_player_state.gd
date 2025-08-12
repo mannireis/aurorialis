@@ -15,3 +15,6 @@ func update(delta: float) -> void:
 	if PLAYER.is_on_floor():
 		ANIMATION.play("jump_end")
 		transition.emit("IdlePlayerState")
+
+	if PLAYER.is_on_wall() and PLAYER.is_on_floor() == false:
+		transition.emit("WallRunningPlayerState")

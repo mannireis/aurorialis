@@ -39,6 +39,9 @@ func update(delta):
 		
 	if PLAYER.velocity.y < -3.0 and !PLAYER.is_on_floor():
 		transition.emit("FallingPlayerState")
+		
+	if PLAYER.is_on_wall() and PLAYER.is_on_floor() == false:
+		transition.emit("WallRunningPlayerState")
 
 func set_anim_speed(spd):
 	var alpha = remap(spd, 0.0, SPEED, 0.0, 1.0)
