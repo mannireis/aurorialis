@@ -9,7 +9,7 @@ class_name WallRunningPlayerState extends PlayerMovementState
 
 func enter(previous_state):
 	ANIMATION.pause()
-	ANIMATION.play("wall_slide")
+	#ANIMATION.play("wall_slide")
 
 
 func update(delta):
