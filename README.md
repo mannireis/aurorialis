@@ -12,3 +12,4 @@ Use wasd to move around.
 Use the mouse to aim.
 Use ctrl to run.
 Use ctrl+shift to slide.
+Use shift to crouch.
