@@ -3,16 +3,17 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bd4fm0v4sf2qx"
+path.s3tc="res://.godot/imported/grid.jpg-98e91c7ac35e7c2efc8df0a4f602d545.s3tc.ctex"
 path.etc2="res://.godot/imported/grid.jpg-98e91c7ac35e7c2efc8df0a4f602d545.etc2.ctex"
 metadata={
-"imported_formats": ["etc2_astc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://textures/grid.jpg"
-dest_files=["res://.godot/imported/grid.jpg-98e91c7ac35e7c2efc8df0a4f602d545.etc2.ctex"]
+dest_files=["res://.godot/imported/grid.jpg-98e91c7ac35e7c2efc8df0a4f602d545.s3tc.ctex", "res://.godot/imported/grid.jpg-98e91c7ac35e7c2efc8df0a4f602d545.etc2.ctex"]
 
 [params]
 

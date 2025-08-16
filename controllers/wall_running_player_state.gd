@@ -5,8 +5,6 @@ class_name WallRunningPlayerState extends PlayerMovementState
 @export var DECELARATION : float = 0.25
 @export var FRICTION : float = -60
 
-@onready var WALL_RUNNING_SHAPECAST : ShapeCast3D = %ShapeCastWall
-
 func enter(previous_state):
 	ANIMATION.pause()
 	#ANIMATION.play("wall_slide")
@@ -20,8 +18,8 @@ func update(delta):
 	PLAYER.velocity.y = FRICTION * delta
 
 	if PLAYER.is_on_wall() == false:
-		ANIMATION.play("wall_slide_end")
-		await get_tree().create_timer(1).timeout
+		#ANIMATION.play("wall_slide_end")
+		#await get_tree().create_timer(1).timeout
 		transition.emit("IdlePlayerState")
 
 		

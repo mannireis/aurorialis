@@ -1,8 +1,11 @@
-[gd_scene load_steps=28 format=3 uid="uid://bjdwhx3f5cyq8"]
+[gd_scene load_steps=31 format=3 uid="uid://bjdwhx3f5cyq8"]
 
 [ext_resource type="Script" uid="uid://brubiem56ivgb" path="res://controllers/scripts/fps_controller.gd" id="1_v8m2t"]
+[ext_resource type="PackedScene" uid="uid://io2ihehbc0mi" path="res://controllers/weapons/gun_1.tscn" id="2_g47ty"]
 [ext_resource type="Script" uid="uid://c7hal5vnftec" path="res://controllers/scripts/reticle.gd" id="2_lwx6h"]
+[ext_resource type="PackedScene" uid="uid://ed3mwuxcc4nf" path="res://controllers/weapons/weapon.tscn" id="2_p5e65"]
 [ext_resource type="Theme" uid="uid://co7fvhogw8woi" path="res://ui/themes/debug.tres" id="3_r0vb7"]
+[ext_resource type="Resource" uid="uid://creet2kyj2c44" path="res://weapons/sword/sword_resource.tres" id="4_g47ty"]
 [ext_resource type="Script" uid="uid://cbk67gdojqj35" path="res://scripts/debug_panel.gd" id="4_xf6l8"]
 [ext_resource type="Script" uid="uid://c3ieg6j4bsake" path="res://scripts/player_state_machine.gd" id="5_dn71m"]
 [ext_resource type="Script" uid="uid://dqvyswp1obyma" path="res://controllers/idle_state.gd" id="6_ec7y2"]
@@ -494,9 +497,8 @@ _data = {
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_v8m2t"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u8dbi"]
-radius = 0.82
-height = 1.64
+[sub_resource type="SphereShape3D" id="SphereShape3D_qxme2"]
+radius = 0.3
 
 [node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIMATIONPLAYER", "CROUCH_SHAPECAST")]
 script = ExtResource("1_v8m2t")
@@ -521,6 +523,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 update_mode = 1
 blend_distance = 8.0
 
+[node name="WeaponRig" type="Node3D" parent="CameraController/Camera3D"]
+
+[node name="Gun1" parent="CameraController/Camera3D/WeaponRig" instance=ExtResource("2_g47ty")]
+transform = Transform3D(-1.19566, 0.0394223, -0.0940567, -0.0940621, 0.00138291, 1.19631, 0.0394094, 1.19935, 0.00171221, 0.148812, -0.223017, -0.633668)
+visible = false
+
+[node name="Sword" parent="CameraController/Camera3D/WeaponRig" instance=ExtResource("2_p5e65")]
+transform = Transform3D(-0.16368, -1.18852, -0.0249101, 1.17788, -0.165541, 0.158708, -0.160626, -0.00280334, 1.1892, -0.456, -0.452, -0.606)
+WEAPON_TYPE = ExtResource("4_g47ty")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_lwx6h")
@@ -530,13 +542,6 @@ libraries = {
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("SphereShape3D_v8m2t")
-target_position = Vector3(0, -0.4, 0)
-debug_shape_custom_color = Color(0, 1, 0.470588, 1)
-
-[node name="ShapeCastWall" type="ShapeCast3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
-shape = SubResource("CapsuleShape3D_u8dbi")
 target_position = Vector3(0, -0.4, 0)
 debug_shape_custom_color = Color(0, 1, 0.470588, 1)
 
@@ -633,5 +638,21 @@ metadata/_custom_type_script = "uid://bxynjae0xjxpn"
 [node name="WallRunningPlayerState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("13_u8dbi")
 metadata/_custom_type_script = "uid://bxynjae0xjxpn"
+
+[node name="WallDetectors" type="Node3D" parent="."]
+
+[node name="ShapeCastRight" type="ShapeCast3D" parent="WallDetectors"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.8, 0)
+shape = SubResource("SphereShape3D_qxme2")
+target_position = Vector3(0, -0.4, 0)
+debug_shape_custom_color = Color(0, 1, 0.470588, 1)
+
+[node name="ShapeCastLeft" type="ShapeCast3D" parent="WallDetectors"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0.8, 0)
+shape = SubResource("SphereShape3D_qxme2")
+target_position = Vector3(0, -0.4, 0)
+debug_shape_custom_color = Color(0, 1, 0.470588, 1)
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]

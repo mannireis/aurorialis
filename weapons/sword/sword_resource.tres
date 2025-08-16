@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Weapons" load_steps=4 format=3 uid="uid://creet2kyj2c44"]
+
+[ext_resource type="Script" uid="uid://v37s6ovh4mv5" path="res://controllers/weapons/scripts/weapons.gd" id="1_ieus5"]
+[ext_resource type="ArrayMesh" uid="uid://ccrhsyicergle" path="res://weapons/sword/sci-fi_sword_LP_stiffener_001_blade_2048x4096_0.res" id="1_v0dc8"]
+[ext_resource type="ArrayMesh" uid="uid://dmty67kuc3jry" path="res://weapons/sword/sci-fi_sword_LP_stiffener_handle4096x4096_0.res" id="2_2ikqb"]
+
+[resource]
+script = ExtResource("1_ieus5")
+name = &"Katana"
+scale = Vector3(1.2, 1.2, 1.2)
+position = Vector3(-0.456, -0.452, -0.606)
+rotation = Vector3(-7.6, -1.2, 98)
+mesh = ExtResource("1_v0dc8")
+mesh2 = ExtResource("2_2ikqb")
+metadata/_custom_type_script = "uid://v37s6ovh4mv5"

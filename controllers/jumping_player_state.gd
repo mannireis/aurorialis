@@ -23,5 +23,8 @@ func update(delta):
 		ANIMATION.play("jump_end")
 		transition.emit("IdlePlayerState")
 		
-	if PLAYER.is_on_wall() and PLAYER.is_on_floor() == false:
+	if PLAYER.is_on_wall() and PLAYER.is_on_floor() == false and %ShapeCastRight.is_colliding():
+		transition.emit("WallRunningPlayerState")
+		
+	if PLAYER.is_on_wall() and PLAYER.is_on_floor() == false and %ShapeCastLeft.is_colliding():
 		transition.emit("WallRunningPlayerState")

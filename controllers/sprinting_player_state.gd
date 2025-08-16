@@ -26,7 +26,7 @@ func update(delta):
 	
 	set_animation_speed(PLAYER.velocity.length())
 	
-	if Input.is_action_just_released("sprint"):
+	if Input.is_action_just_pressed("sprint"):
 		transition.emit("WalkingPlayerState")
 		
 	if Input.is_action_just_pressed("crouch") and  PLAYER.velocity.length() > 6:
