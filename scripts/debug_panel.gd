@@ -2,18 +2,15 @@ extends PanelContainer
 
 @onready var property_container = %VBoxContainer
 
-#var property
 var fps : String
 
 func _ready() -> void:
 	visible = false
 	Global.debug = self
-	#add_debug_property("FPS",fps)
-	
+
 func _process(delta):
 	if visible == true:
 		fps = "%.2f" % (1.0/delta)
-		#property.text = property.name + ": " + fps
 	Global.debug.add_property("FPS", fps, 1)
 
 func _input(event: InputEvent) -> void:
@@ -31,9 +28,3 @@ func add_property(title: String, value, order):
 	elif visible:
 		target.text = title + ": " + str(value)
 		property_container.move_child(target,order)
-
-#func add_debug_property(title : String, value):
-	#property = Label.new()
-	#property_container.add_child(property)
-	#property.name = title
-	#property.text = property.name + value

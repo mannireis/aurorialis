@@ -1,12 +1,12 @@
 class_name SlidingPlayerState  extends PlayerMovementState
 
+@onready var CROUCH_SHAPECAST : ShapeCast3D = %ShapeCastTop
+
 @export var SPEED : float = 8
 @export var ACCELERATION : float = 0.1
 @export var DECELARATION : float = 0.25
 @export var TILT_AMOUNT : float = 0.09
 @export_range(1, 6, 0.1) var SLIDE_ANIM_SPEED : float = 7
-
-@onready var CROUCH_SHAPECAST : ShapeCast3D = %ShapeCastTop
 
 func enter(previous_state) -> void:
 	set_tilt(PLAYER._current_rotation)
@@ -16,7 +16,6 @@ func enter(previous_state) -> void:
 
 func update(delta):
 	PLAYER.update_gravity(delta)
-	#PLAYER.update_input(SPEED,ACCELERATION,DECELARATION) #will see
 	PLAYER.update_velocity()
 
 func set_tilt(player_rotation) -> void:
@@ -26,7 +25,6 @@ func set_tilt(player_rotation) -> void:
 		tilt.z = 0.05
 	ANIMATION.get_animation("sliding").track_set_key_value(8,1,tilt)
 	ANIMATION.get_animation("sliding").track_set_key_value(8,2,tilt)
-	
 
 func finish():
 	transition.emit("CrouchingPlayerState")

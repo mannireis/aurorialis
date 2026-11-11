@@ -1,87 +1,107 @@
-class_name Player extends CharacterBody3D
+extends CharacterBody3D
+class_name Player
 
-@export var SPEED_DEFAULT : float = 5
-@export var SPEED_SPRINTING : float = 7
-@export var ACCELERATION : float = 0.1
-@export var DECELARATION : float = 0.25
-@export_range(5, 10, 0.1) var CROUCH_SPEED : float = 7.0
-@export var MOUSE_SENS : float = 0.3
+# --- Movement ---
+@export var SPEED_DEFAULT: float = 5.0
+@export var SPEED_SPRINTING: float = 7.0
+@export var ACCELERATION: float = 0.1
+@export var DECELARATION: float = 0.25
+@export_range(1, 10, 0.1) var CROUCH_SPEED: float = 3.0
 
+# --- Camera ---
+@export var MOUSE_SENS: float = 0.3
+@export var JOYPAD_SENS: float = 2.0
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90)
-@export var CAMERA_CONTROLLER : Camera3D
-@export var ANIMATIONPLAYER : AnimationPlayer
-@export var CROUCH_SHAPECAST : Node3D
+@export var CAMERA_CONTROLLER: Camera3D
 
-var _speed : float
-var _mouse_input : bool = false
-var _mouse_rotation : Vector3
-var _rotation_input : float
-var _tilt_input : float
-var _player_rotation : Vector3
-var _camera_rotation : Vector3
-var _is_crouching : bool = false
+# --- Misc ---
+@export var ANIMATIONPLAYER: AnimationPlayer
+@export var CROUCH_SHAPECAST: Node3D
 
-var _current_rotation : float
+# --- Internal ---
+var _mouse_input: bool = false
+var _rotation_input: float = 0.0
+var _tilt_input: float = 0.0
+var _mouse_rotation: Vector3 = Vector3.ZERO
+var _speed: float = SPEED_DEFAULT
+
+func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	CROUCH_SHAPECAST.add_exception($".")
+	Global.player = self
 
 func _input(event):
 	if event.is_action_pressed("exit"):
 		get_tree().quit()
 
 func _unhandled_input(event):
-	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
-	if _mouse_input:
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		_mouse_input = true
 		_rotation_input = -event.relative.x * MOUSE_SENS
 		_tilt_input = -event.relative.y * MOUSE_SENS
 
 func update_camera(delta):
-	_current_rotation = _rotation_input
+	# --- Right Stick Controller ---
+	var joy_x = Input.get_joy_axis(0, JOY_AXIS_RIGHT_X)
+	var joy_y = Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y)
+
+	if abs(joy_x) > 0.1:
+		_rotation_input += -joy_x * JOYPAD_SENS
+	if abs(joy_y) > 0.1:
+		_tilt_input += -joy_y * JOYPAD_SENS
+
+	# --- Apply rotation ---
 	_mouse_rotation.x += _tilt_input * delta
 	_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
 	_mouse_rotation.y += _rotation_input * delta
-	
-	_player_rotation = Vector3(0.0,_mouse_rotation.y,0.0)
-	_camera_rotation = Vector3(_mouse_rotation.x,0.0,0.0)
-	
-	CAMERA_CONTROLLER.transform.basis = Basis.from_euler(_camera_rotation)
-	CAMERA_CONTROLLER.rotation.z = 0.0
-	
-	global_transform.basis = Basis.from_euler(_player_rotation)
-	
+
+	var player_rot = Vector3(0, _mouse_rotation.y, 0)
+	var camera_rot = Vector3(_mouse_rotation.x, 0, 0)
+
+	global_transform.basis = Basis.from_euler(player_rot)
+	CAMERA_CONTROLLER.transform.basis = Basis.from_euler(camera_rot)
+	CAMERA_CONTROLLER.rotation.z = 0
+
 	_rotation_input = 0.0
 	_tilt_input = 0.0
 
-func _ready() -> void:
-	
-	Global.player = self
-	
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	_speed = SPEED_DEFAULT
-	CROUCH_SHAPECAST.add_exception($".")
+func update_gravity(delta):
+	if not is_on_floor():
+		velocity.y -= ProjectSettings.get_setting("physics/3d/default_gravity") * delta
+	else:
+		velocity.y = 0.0
 
-func _physics_process(delta: float) -> void:
-	Global.debug.add_property("MovementSpeed",_speed, 2)
-	Global.debug.add_property("MouseRotation",_mouse_rotation, 3)
+func update_input(speed: float, acceleration: float, deceleration: float):
+	# --- Left Stick / Keyboard ---
+	var input_dir = Vector2(
+		Input.get_action_strength("right") - Input.get_action_strength("left"),
+		Input.get_action_strength("back") - Input.get_action_strength("forward")
+	)
 
-	update_camera(delta)
+	# Add left stick support
+	input_dir.x += Input.get_joy_axis(0, JOY_AXIS_LEFT_X)
+	input_dir.y += Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)
 
-func set_movement_speed(state : String):
-	match state:
-		"default":
-			_speed = SPEED_DEFAULT
+	if input_dir.length() > 1:
+		input_dir = input_dir.normalized()
 
-func update_gravity(delta) -> void:
-	velocity += get_gravity() * delta
-
-func update_input(speed: float, acceleration: float, deceleration: float) -> void:
-	var input_dir := Input.get_vector("left", "right", "forward", "back")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = lerp(velocity.x,direction.x * _speed, acceleration)
-		velocity.z = lerp(velocity.z,direction.z * _speed, acceleration)
+		velocity.x = lerp(velocity.x, direction.x * speed, acceleration)
+		velocity.z = lerp(velocity.z, direction.z * speed, acceleration)
 	else:
 		velocity.x = move_toward(velocity.x, 0, deceleration)
 		velocity.z = move_toward(velocity.z, 0, deceleration)
 
-func update_velocity() -> void:
+func update_velocity():
 	move_and_slide()
+
+func set_movement_speed(state: String):
+	match state:
+		"default":
+			_speed = SPEED_DEFAULT
+		"sprint":
+			_speed = SPEED_SPRINTING
+		"crouch":
+			_speed = CROUCH_SPEED

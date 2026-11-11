@@ -7,9 +7,18 @@
 [resource]
 script = ExtResource("1_ieus5")
 name = &"Katana"
-scale = Vector3(1.2, 1.2, 1.2)
-position = Vector3(-0.456, -0.452, -0.606)
-rotation = Vector3(-7.6, -1.2, 98)
+position = Vector3(0.149, -0.223, -0.634)
+rotation = Vector3(-85.5, -89, -89)
+scale = Vector3(1.1, 1.1, 1.1)
+sway_min = Vector2(-20, -20)
+sway_max = Vector2(20, 20)
+sway_speed_position = 0.04
+sway_speed_rotation = 0.06
+sway_amount_position = 30.0
+sway_amount_rotation = 30.0
+idle_sway_adjustment = 10.0
+idle_sway_rotation_strength = 300.0
+random_sway_amount = 5.0
 mesh = ExtResource("1_v0dc8")
 mesh2 = ExtResource("2_2ikqb")
 metadata/_custom_type_script = "uid://v37s6ovh4mv5"

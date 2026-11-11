@@ -525,13 +525,13 @@ blend_distance = 8.0
 
 [node name="WeaponRig" type="Node3D" parent="CameraController/Camera3D"]
 
-[node name="Gun1" parent="CameraController/Camera3D/WeaponRig" instance=ExtResource("2_g47ty")]
-transform = Transform3D(-1.19566, 0.0394223, -0.0940567, -0.0940621, 0.00138291, 1.19631, 0.0394094, 1.19935, 0.00171221, 0.148812, -0.223017, -0.633668)
-visible = false
-
-[node name="Sword" parent="CameraController/Camera3D/WeaponRig" instance=ExtResource("2_p5e65")]
-transform = Transform3D(-0.16368, -1.18852, -0.0249101, 1.17788, -0.165541, 0.158708, -0.160626, -0.00280334, 1.1892, -0.456, -0.452, -0.606)
+[node name="Weapon" parent="CameraController/Camera3D/WeaponRig" instance=ExtResource("2_p5e65")]
+transform = Transform3D(-1.09594, 0.0383302, -0.0862918, -0.0862918, 0.00150623, 1.09661, 0.0383302, 1.09933, 0.00150623, 0.149, -0.223, -0.634)
 WEAPON_TYPE = ExtResource("4_g47ty")
+
+[node name="Gun1" parent="CameraController/Camera3D/WeaponRig" instance=ExtResource("2_g47ty")]
+transform = Transform3D(-1.19566, 0.0394223, -0.0940567, -0.0940621, 0.00138291, 1.19631, 0.0394094, 1.19935, 0.00171221, 0.146623, -0.219899, -0.631715)
+visible = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

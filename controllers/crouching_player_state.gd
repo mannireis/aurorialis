@@ -1,11 +1,11 @@
 class_name CrouchingPlayerState extends PlayerMovementState
 
+@onready var CROUCH_SHAPECAST : ShapeCast3D = %ShapeCastTop
+
 @export var SPEED : float = 3
 @export var ACCELERATION : float = 0.1
 @export var DECELARATION : float = 0.25
 @export_range(1, 6, 0.1) var CROUCH_SPEED : float = 4.0
-
-@onready var CROUCH_SHAPECAST : ShapeCast3D = %ShapeCastTop
 
 var RELEASED : bool = false
 

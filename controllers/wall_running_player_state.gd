@@ -7,8 +7,6 @@ class_name WallRunningPlayerState extends PlayerMovementState
 
 func enter(previous_state):
 	ANIMATION.pause()
-	#ANIMATION.play("wall_slide")
-
 
 func update(delta):
 	PLAYER.update_gravity(delta)
@@ -18,10 +16,7 @@ func update(delta):
 	PLAYER.velocity.y = FRICTION * delta
 
 	if PLAYER.is_on_wall() == false:
-		#ANIMATION.play("wall_slide_end")
-		#await get_tree().create_timer(1).timeout
 		transition.emit("IdlePlayerState")
 
-		
 	if Input.is_action_just_pressed("jump") and PLAYER.is_on_wall():
 		transition.emit("JumpingPlayerState")
